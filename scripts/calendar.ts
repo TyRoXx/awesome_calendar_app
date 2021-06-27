@@ -41,8 +41,8 @@ export function loadAppointments() {
 
         if (appointmentForCurrentDay.length > 0) {
             const endLast = appointmentForCurrentDay[appointmentForCurrentDay.length - 1].end
-            const duration = appointment.start.getTime() - endLast.getTime()
-            dayElement.append(generateGap(duration))
+            const durationInSeconds = (appointment.start.getTime() - endLast.getTime()) / 1000
+            dayElement.append(generateGap(durationInSeconds))
         }
         dayElement.append(generateAppointmentHTML(appointment));
 
@@ -50,9 +50,9 @@ export function loadAppointments() {
     }
 }
 
-function generateGap(duration: number): HTMLElement {
+function generateGap(durationInSeconds: number): HTMLElement {
     const element = document.createElement('p');
-    element.innerText = formatTime(duration)
+    element.innerText = formatTime(durationInSeconds)
     element.classList.add('gap')
 
     return element
@@ -68,7 +68,7 @@ export function submitNewEventForm(event: Event) {
         new Date(String(formData.get('end'))),
         'yellow'
     )
-    
+
     appointments.push(appointment)
     rerenderAppointments()
 }
